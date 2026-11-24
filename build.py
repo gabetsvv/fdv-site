@@ -6,11 +6,14 @@ ROOT = Path(__file__).parent
 
 COMPANY = "FDV"
 TAGLINE = "Продажа контейнеров"
-PHONE = "+7 (000) 000-00-00"   # TODO
-PHONE_FREE = "8 (800) 000-00-00"
-EMAIL = "info@example.ru"      # TODO
-HOURS = "Пн–Пт, 9:00–18:00"
-ADDRESS = "г. Москва"
+PHONE = "+7 (926) 290-29-39"
+PHONE_TEL = "+79262902939"
+EMAIL = "fdvcontainer@yandex.ru"
+HOURS = "Пн–Вс, 9:00–20:00"
+ADDRESS = "г. Дмитров"
+ORG = "ИП Волков Пётр Андреевич"
+INN = "500724243925"
+OGRNIP = "324508100285690"
 
 # (slug, название, [(slug, название), ...])
 MENU = [
@@ -54,7 +57,7 @@ def header(prefix, active):
     return f"""
 <div class="topbar"><div class="container">
   <div class="topbar__group"><span>{ADDRESS}</span><span class="topbar__group--hide">{HOURS}</span></div>
-  <div class="topbar__group"><a href="mailto:{EMAIL}">{EMAIL}</a><a class="topbar__group--hide" href="tel:{PHONE_FREE.replace(' ', '')}">{PHONE_FREE} — бесплатно по России</a></div>
+  <div class="topbar__group"><a href="mailto:{EMAIL}">{EMAIL}</a><a class="topbar__group--hide" href="tel:{PHONE_TEL}">{PHONE}</a></div>
 </div></div>
 <header class="header"><div class="container header__row">
   <a class="logo" href="{href(prefix, '')}">
@@ -63,7 +66,7 @@ def header(prefix, active):
   </a>
   <nav class="nav"><ul class="nav__list">{''.join(items)}</ul></nav>
   <div class="header__contacts">
-    <a class="header__phone" href="tel:{PHONE.replace(' ', '')}">{PHONE}<small>{HOURS}</small></a>
+    <a class="header__phone" href="tel:{PHONE_TEL}">{PHONE}<small>{HOURS}</small></a>
     <a class="btn btn--accent btn--sm" href="{href(prefix, 'contacts')}">Заказать звонок</a>
   </div>
   <button class="burger" aria-label="Меню"><span></span></button>
@@ -82,11 +85,14 @@ def footer(prefix):
   <div class="footer__grid">
     <div>
       <a class="logo" href="{href(prefix, '')}"><img src="{prefix}img/logo.png" alt="{COMPANY}"></a>
-      <p style="margin-top:18px"><a href="tel:{PHONE.replace(' ', '')}">{PHONE}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a><br>{ADDRESS}<br>{HOURS}</p>
+      <p style="margin-top:18px"><a href="tel:{PHONE_TEL}">{PHONE}</a><br><a href="mailto:{EMAIL}">{EMAIL}</a><br>{ADDRESS}<br>{HOURS}</p>
     </div>
     {''.join(cols)}
   </div>
-  <div class="footer__bottom"><span>© 2026 {COMPANY}. Все права защищены.</span><a href="#">Политика конфиденциальности</a></div>
+  <div class="footer__bottom">
+    <div class="footer__org"><span>© 2026 {COMPANY}. Все права защищены.</span><span>{ORG}</span><span>ИНН {INN}</span><span>ОГРНИП {OGRNIP}</span></div>
+    <a href="#">Политика конфиденциальности</a>
+  </div>
 </div></footer>
 <script src="{prefix}js/main.js"></script>"""
 
@@ -121,8 +127,8 @@ HOME = """
   </video>
   <div class="container">
   <div class="hero__kicker">Контейнерная площадка FDV</div>
-  <h1>Морские <span>контейнеры</span> с доставкой по России</h1>
-  <p>Продажа, аренда, доставка и установка контейнеров. Подберём под вашу задачу и привезём в срок.</p>
+  <h1>Морские <span>контейнеры</span> с доставкой во все регионы ЦФО</h1>
+  <p>Продажа, доставка, аренда и хранение морских контейнеров</p>
   <div class="hero__actions">
     <a class="btn btn--accent" href="catalog/index.html">Выбрать контейнер</a>
     <a class="btn btn--ghost" href="contacts/index.html">Оставить заявку</a>
@@ -131,7 +137,7 @@ HOME = """
   <div class="hero__facts"><div class="container">
     <div class="hero__fact"><b>20′ · 40′ · 40′ HC</b><span>размеры в наличии на площадке</span></div>
     <div class="hero__fact"><b>Новые и б/у</b><span>состояние под вашу задачу и бюджет</span></div>
-    <div class="hero__fact"><b>Вся Россия</b><span>доставка и установка контейнера</span></div>
+    <div class="hero__fact"><b>Регионы ЦФО</b><span>доставка во все регионы ЦФО</span></div>
   </div></div>
 </section>
 
@@ -142,8 +148,8 @@ HOME = """
   </div>
   <div class="features">
     <div class="feature"><div class="feature__num">1000+</div><h3>Контейнеров в наличии</h3><p>Новые и б/у, разных типов и размеров.</p></div>
-    <div class="feature"><div class="feature__num">РФ</div><h3>Доставка по России</h3><p>Собственная логистика, любой регион.</p></div>
-    <div class="feature"><div class="feature__num">−10%</div><h3>Скидки постоянным</h3><p>Гибкие условия и отсрочка платежа.</p></div>
+    <div class="feature"><div class="feature__num">ЦФО</div><h3>Доставка во все регионы ЦФО</h3><p>Собственная логистика, привезём в нужное место.</p></div>
+    <div class="feature"><div class="feature__num">2 нед.</div><h3>Бронирование контейнера</h3><p>Возможность забронировать подходящий контейнер до 2-х недель.</p></div>
     <div class="feature"><div class="feature__num">24ч</div><h3>Быстрый подбор</h3><p>Предложение в день обращения.</p></div>
   </div>
 </div></section>
@@ -153,12 +159,7 @@ HOME = """
     <h2 class="section__title">Морские контейнеры</h2>
     <a class="btn btn--outline btn--sm" href="catalog/index.html">Весь каталог</a>
   </div>
-  <div class="cards">
-    <a class="card" href="catalog/index.html"><div class="card__img"><i></i></div><div class="card__body"><h3>20 футов</h3><p>6 м · 33 м³ · до 28 т. Самый ходовой размер для склада и перевозки.</p><span class="card__link">Подробнее →</span></div></a>
-    <a class="card" href="catalog/index.html"><div class="card__img"><i></i></div><div class="card__body"><h3>40 футов</h3><p>12 м · 67 м³ · до 26 т. Для больших объёмов груза.</p><span class="card__link">Подробнее →</span></div></a>
-    <a class="card" href="catalog/index.html"><div class="card__img"><i></i></div><div class="card__body"><h3>40 футов High Cube</h3><p>Увеличенная высота 2,9 м · 76 м³. Для лёгких и объёмных грузов.</p><span class="card__link">Подробнее →</span></div></a>
-    <a class="card" href="catalog/index.html"><div class="card__img"><i></i></div><div class="card__body"><h3>Рефрижераторные</h3><p>20 и 40 футов для грузов с контролем температуры.</p><span class="card__link">Подробнее →</span></div></a>
-  </div>
+CONTAINERS_HTML
 </div></section>
 
 <section class="section"><div class="container">
@@ -166,8 +167,8 @@ HOME = """
   <div class="steps">
     <div class="step"><h3>Заявка</h3><p>Оставляете заявку на сайте или по телефону.</p></div>
     <div class="step"><h3>Подбор</h3><p>Подбираем контейнер под задачу и бюджет.</p></div>
-    <div class="step"><h3>Оплата</h3><p>Бронируем и заключаем договор.</p></div>
-    <div class="step"><h3>Доставка</h3><p>Привозим и устанавливаем в согласованное время.</p></div>
+    <div class="step"><h3>Условия оплаты</h3><p>Утверждаем условия и наиболее удобную форму оплаты.</p></div>
+    <div class="step"><h3>Доставка</h3><p>Доставляем контейнер в запланированную дату.</p></div>
   </div>
 </div></section>
 
@@ -183,6 +184,95 @@ HOME = """
   </div>
 </div></section>
 """
+
+
+import math
+
+CONTAINERS = [
+    # название, подпись, длина, ширина, высота (м, внешние), объём м³, грузоподъёмность т
+    ("20 футов", "Стандарт · 20′ DC", 6.06, 2.44, 2.59, "33,2", "до 28"),
+    ("40 футов", "Стандарт · 40′ DC", 12.19, 2.44, 2.59, "67,7", "до 26,5"),
+    ("40 футов High Cube", "Повышенный · 40′ HC", 12.19, 2.44, 2.90, "76,4", "до 26,5"),
+]
+
+
+def container_svg(L, W, H):
+    """Контейнер в проекции с размерными линиями. Масштаб общий, чтобы размеры сравнивались честно."""
+    s = 22.0
+    uL = (math.cos(math.radians(16)) * s, math.sin(math.radians(16)) * s)
+    uW = (-math.cos(math.radians(42)) * s * .8, math.sin(math.radians(42)) * s * .8)
+    ox, oy = 118, 30 + (2.9 - H) * s
+
+    def P(l, w, h):
+        return (ox + l * uL[0] + w * uW[0], oy + l * uL[1] + w * uW[1] - h * s + 2.9 * s)
+
+    def poly(pts, cls):
+        return f'<polygon class="{cls}" points="' + " ".join(f"{x:.1f},{y:.1f}" for x, y in pts) + '"/>'
+
+    def fmt(v):
+        return f"{v:.2f}".replace(".", ",")
+
+    out = []
+    # грани: верх, длинная сторона (w=W), торец с дверями (l=L)
+    out.append(poly([P(0, 0, H), P(L, 0, H), P(L, W, H), P(0, W, H)], "c-top"))
+    out.append(poly([P(0, W, 0), P(L, W, 0), P(L, W, H), P(0, W, H)], "c-side"))
+    out.append(poly([P(L, 0, 0), P(L, W, 0), P(L, W, H), P(L, 0, H)], "c-end"))
+    # гофра на длинной стороне
+    n = int(L / .3)
+    for k in range(1, n):
+        l = L * k / n
+        a, c = P(l, W, .08), P(l, W, H - .08)
+        out.append(f'<line class="c-rib" x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{c[0]:.1f}" y2="{c[1]:.1f}"/>')
+    # двери: створки и запорные штанги
+    for w in (W / 2,):
+        a, c = P(L, w, 0), P(L, w, H)
+        out.append(f'<line class="c-door" x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{c[0]:.1f}" y2="{c[1]:.1f}"/>')
+    for w in (W * .18, W * .38, W * .62, W * .82):
+        a, c = P(L, w, .15), P(L, w, H - .15)
+        out.append(f'<line class="c-bar" x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{c[0]:.1f}" y2="{c[1]:.1f}"/>')
+
+    def dim(p1, p2, off, label, anchor="middle"):
+        (x1, y1), (x2, y2) = p1, p2
+        x1, y1, x2, y2 = x1 + off[0], y1 + off[1], x2 + off[0], y2 + off[1]
+        mx, my = (x1 + x2) / 2, (y1 + y2) / 2
+        ang = math.degrees(math.atan2(y2 - y1, x2 - x1))
+        if ang > 90 or ang < -90:
+            ang += 180
+        return (f'<line class="c-dim" x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" marker-start="url(#ar)" marker-end="url(#ar)"/>'
+                f'<text class="c-lbl" x="{mx:.1f}" y="{my:.1f}" text-anchor="{anchor}" transform="rotate({ang:.1f} {mx:.1f} {my:.1f}) translate(0 {14 if off[1] > 0 else -6})">{label}</text>')
+
+    out.append(dim(P(0, W, 0), P(L, W, 0), (0, 12), f"{fmt(L)} м"))
+    out.append(dim(P(L, W, 0), P(L, 0, 0), (9, 8), f"{fmt(W)} м"))
+    a, c = P(0, W, 0), P(0, W, H)
+    out.append(f'<line class="c-dim" x1="{a[0]-12:.1f}" y1="{a[1]:.1f}" x2="{c[0]-12:.1f}" y2="{c[1]:.1f}" marker-start="url(#ar)" marker-end="url(#ar)"/>'
+               f'<text class="c-lbl" x="{a[0]-18:.1f}" y="{(a[1]+c[1])/2+4:.1f}" text-anchor="end">{fmt(H)} м</text>')
+    defs = '<defs><marker id="ar" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="c-arrow"/></marker></defs>'
+    return f'<svg class="cont__svg" viewBox="0 0 430 250" role="img" aria-label="Габариты {fmt(L)} × {fmt(W)} × {fmt(H)} м">{defs}{"".join(out)}</svg>'
+
+
+def containers_html():
+    cards = []
+    for name, sub, L, W, H, vol, load in CONTAINERS:
+        f = lambda v: f"{v:.2f}".replace(".", ",")
+        cards.append(f"""    <a class="cont" href="catalog/index.html">
+      <div class="cont__img">{container_svg(L, W, H)}</div>
+      <div class="cont__body">
+        <span class="cont__sub">{sub}</span>
+        <h3>{name}</h3>
+        <dl class="cont__specs">
+          <div><dt>Длина</dt><dd>{f(L)} м</dd></div>
+          <div><dt>Ширина</dt><dd>{f(W)} м</dd></div>
+          <div><dt>Высота</dt><dd>{f(H)} м</dd></div>
+          <div><dt>Объём</dt><dd>{vol} м³</dd></div>
+          <div><dt>Грузоподъёмность</dt><dd>{load} т</dd></div>
+        </dl>
+        <span class="card__link">Подробнее →</span>
+      </div>
+    </a>""")
+    return '  <div class="conts">\n' + "\n".join(cards) + '\n  </div>'
+
+
+HOME = HOME.replace("CONTAINERS_HTML", containers_html())
 
 
 def stub(prefix, title, parent, subs):
