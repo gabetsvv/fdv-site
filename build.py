@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Генератор страниц сайта. Шапка и подвал общие — правятся здесь, затем: python3 build.py"""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent
@@ -119,6 +120,18 @@ def page(prefix, active, title, body):
 """
 
 
+CTA_HTML = """  <div class="cta">
+    <div><h2>Нужна консультация?</h2><p>Оставьте телефон — перезвоним, ответим на вопросы и подберём контейнер.</p></div>
+    <form class="form" onsubmit="event.preventDefault(); alert('Форма пока не подключена');">
+      <input type="text" placeholder="Ваше имя">
+      <input type="tel" placeholder="Телефон" required>
+      <button class="btn btn--accent" type="submit">Перезвоните мне</button>
+      <small>Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</small>
+    </form>
+  </div>
+"""
+
+
 HOME = """
 <section class="hero">
   <video class="hero__video" autoplay muted loop playsinline preload="auto" poster="video/hero-poster.jpg" aria-hidden="true">
@@ -144,13 +157,13 @@ HOME = """
 <section class="section"><div class="container">
   <div class="section__head">
     <h2 class="section__title">Почему выбирают нас</h2>
-    <p class="section__lead">Текст-заглушка: коротко о компании и о том, чем мы отличаемся.</p>
+    <p class="section__lead">Контейнерная площадка в Дмитрове: подберём, забронируем и привезём контейнер в нужный день.</p>
   </div>
   <div class="features">
-    <div class="feature"><div class="feature__num">1000+</div><h3>Контейнеров в наличии</h3><p>Новые и б/у, разных типов и размеров.</p></div>
+    <div class="feature"><div class="feature__num">20′/40′</div><h3>Контейнеры в наличии</h3><p>Стандартные и High Cube, новые и б/у.</p></div>
     <div class="feature"><div class="feature__num">ЦФО</div><h3>Доставка во все регионы ЦФО</h3><p>Собственная логистика, привезём в нужное место.</p></div>
     <div class="feature"><div class="feature__num">2 нед.</div><h3>Бронирование контейнера</h3><p>Возможность забронировать подходящий контейнер до 2-х недель.</p></div>
-    <div class="feature"><div class="feature__num">24ч</div><h3>Быстрый подбор</h3><p>Предложение в день обращения.</p></div>
+    <div class="feature"><div class="feature__num">7/7</div><h3>Без выходных</h3><p>Работаем каждый день с 9:00 до 20:00.</p></div>
   </div>
 </div></section>
 
@@ -173,16 +186,7 @@ CONTAINERS_HTML
 </div></section>
 
 <section class="section" style="padding-top:0"><div class="container">
-  <div class="cta">
-    <div><h2>Нужна консультация?</h2><p>Оставьте телефон — перезвоним в течение 15 минут и подберём контейнер.</p></div>
-    <form class="form" onsubmit="event.preventDefault(); alert('Форма пока не подключена');">
-      <input type="text" placeholder="Ваше имя">
-      <input type="tel" placeholder="Телефон" required>
-      <button class="btn btn--accent" type="submit">Перезвоните мне</button>
-      <small>Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных</small>
-    </form>
-  </div>
-</div></section>
+CTA_HTML</div></section>
 """
 
 
@@ -250,11 +254,11 @@ def container_svg(L, W, H):
     return f'<svg class="cont__svg" viewBox="0 0 430 250" role="img" aria-label="Габариты {fmt(L)} × {fmt(W)} × {fmt(H)} м">{defs}{"".join(out)}</svg>'
 
 
-def containers_html():
+def containers_html(prefix=""):
     cards = []
     for name, sub, L, W, H, vol, load in CONTAINERS:
         f = lambda v: f"{v:.2f}".replace(".", ",")
-        cards.append(f"""    <a class="cont" href="catalog/index.html">
+        cards.append(f"""    <a class="cont" href="{href(prefix, 'catalog')}">
       <div class="cont__img">{container_svg(L, W, H)}</div>
       <div class="cont__body">
         <span class="cont__sub">{sub}</span>
@@ -272,10 +276,13 @@ def containers_html():
     return '  <div class="conts">\n' + "\n".join(cards) + '\n  </div>'
 
 
-HOME = HOME.replace("CONTAINERS_HTML", containers_html())
+HOME = HOME.replace("CONTAINERS_HTML", containers_html()).replace("CTA_HTML", CTA_HTML)
 
 
-def stub(prefix, title, parent, subs):
+import content
+
+
+def stub(prefix, title, parent, subs, slug=None):
     crumbs = f'<a href="{href(prefix, "")}">Главная</a>'
     if parent:
         crumbs += f' / <a href="{href(prefix, parent[0])}">{parent[1]}</a>'
@@ -283,11 +290,14 @@ def stub(prefix, title, parent, subs):
     if subs:
         sub_html = '<div class="sublinks">' + "".join(
             f'<a href="{href(prefix, s)}">{t}</a>' for s, t in subs) + "</div>"
-    return f"""
+    head = f"""
 <section class="page-head"><div class="container">
   <div class="crumbs">{crumbs}</div>
   <h1>{title}</h1>
-</div></section>
+</div></section>"""
+    if slug in content.PAGES:
+        return head + content.PAGES[slug](prefix, sys.modules[__name__])
+    return head + f"""
 <section class="stub"><div class="container"><div class="stub__box">
   <h2>Раздел в разработке</h2>
   <p>Здесь скоро появится информация.</p>
@@ -313,7 +323,7 @@ def main():
             prefix = "../" * (s.count("/") + 1)
             is_top = s == slug
             parent = None if is_top else (slug, title)
-            write(s, page(prefix, slug, t, stub(prefix, t, parent, subs if is_top else [])))
+            write(s, page(prefix, slug, t, stub(prefix, t, parent, subs if is_top else [], s)))
     print(f"Готово: {len(done) + 1} страниц")
 
 
